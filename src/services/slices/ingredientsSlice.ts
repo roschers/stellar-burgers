@@ -38,7 +38,8 @@ const ingredientsSlice = createSlice({
       })
       .addCase(getIngredients.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Произошла ошибка';
+        state.error = action.error?.message || 'Произошла ошибка';
+        state.items = [];
       });
   }
 });

@@ -38,13 +38,23 @@ export const BurgerConstructor: FC = () => {
       return;
     }
 
+    if (!constructorItems.bun._id) {
+      console.error('Отсутствует _id у булки');
+      return;
+    }
+
     const ingredientIds = [
       constructorItems.bun._id,
-      ...(constructorItems.ingredients || []).map(
-        (item: TConstructorIngredient) => item._id
-      ),
+      ...(constructorItems.ingredients || [])
+        .filter((item: TConstructorIngredient) => item._id)
+        .map((item: TConstructorIngredient) => item._id),
       constructorItems.bun._id
     ];
+
+    if (ingredientIds.length < 3) {
+      console.error('Недостаточно ингредиентов для заказа');
+      return;
+    }
 
     dispatch(createOrder(ingredientIds));
   };

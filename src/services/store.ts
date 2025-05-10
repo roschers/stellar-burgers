@@ -11,7 +11,10 @@ export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false
+      serializableCheck: {
+        // Игнорируем определенные пути в состоянии
+        ignoredPaths: ['constructor']
+      }
     }),
   devTools: process.env.NODE_ENV !== 'production'
 });

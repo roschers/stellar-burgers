@@ -95,7 +95,8 @@ const userSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Ошибка при входе';
+        state.error = action.error?.message || 'Ошибка при входе';
+        state.user = null;
       })
       // Register
       .addCase(register.pending, (state) => {
@@ -108,11 +109,13 @@ const userSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Ошибка при регистрации';
+        state.error = action.error?.message || 'Ошибка при регистрации';
+        state.user = null;
       })
       // Logout
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
+        state.error = null;
       })
       // Get User
       .addCase(getUser.pending, (state) => {
@@ -125,8 +128,8 @@ const userSlice = createSlice({
       })
       .addCase(getUser.rejected, (state, action) => {
         state.loading = false;
-        state.error =
-          action.error.message || 'Ошибка при получении данных пользователя';
+        state.error = action.error?.message || 'Ошибка при получении данных пользователя';
+        state.user = null;
       })
       // Update User
       .addCase(updateUser.pending, (state) => {
@@ -139,18 +142,19 @@ const userSlice = createSlice({
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
-        state.error =
-          action.error.message || 'Ошибка при обновлении данных пользователя';
+        state.error = action.error?.message || 'Ошибка при обновлении данных пользователя';
       })
       // Check Auth
       .addCase(checkUserAuth.fulfilled, (state, action) => {
         state.user = action.payload;
+        state.error = null;
       })
       .addCase(checkUserAuth.rejected, (state, action) => {
-        // Если ошибка unauthorized, просто оставляем user как null
+        state.loading = false;
         if (action.payload !== 'unauthorized') {
-          state.error = action.error.message || 'Ошибка при проверке авторизации';
+          state.error = action.error?.message || 'Ошибка при проверке авторизации';
         }
+        state.user = null;
       });
   }
 });

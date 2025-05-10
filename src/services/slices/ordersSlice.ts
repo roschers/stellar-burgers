@@ -39,8 +39,8 @@ const ordersSlice = createSlice({
       })
       .addCase(getOrders.rejected, (state, action) => {
         state.loading = false;
-        state.error =
-          action.error.message || 'Ошибка при загрузке истории заказов';
+        state.error = action.error?.message || 'Ошибка при загрузке истории заказов';
+        state.orders = [];
       });
   }
 });
