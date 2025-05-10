@@ -104,12 +104,17 @@ type TNewOrderResponse = TServerResponse<{
   name: string;
 }>;
 
-export const orderBurgerApi = (data: string[]) =>
-  fetchWithRefresh<TNewOrderResponse>(`${URL}/orders`, {
+export const orderBurgerApi = (data: string[]) => {
+  const token = getCookie('accessToken');
+  if (!token) {
+    return Promise.reject(new Error('Требуется авторизация'));
+  }
+
+  return fetchWithRefresh<TNewOrderResponse>(`${URL}/orders`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      authorization: getCookie('accessToken')
+      authorization: token
     } as HeadersInit,
     body: JSON.stringify({
       ingredients: data
@@ -118,6 +123,7 @@ export const orderBurgerApi = (data: string[]) =>
     if (data?.success) return data;
     return Promise.reject(data);
   });
+};
 
 type TOrderResponse = TServerResponse<{
   orders: TOrder[];
