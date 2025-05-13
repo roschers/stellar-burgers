@@ -1,11 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { combineReducers } from '@reduxjs/toolkit';
-import ingredientsSlice from './slices/ingredientsSlice';
-import burgerConstructorSlice from './slices/burgerConstructorSlice';
-import userReducer from './slices/userSlice';
-import feedDataSlice from './slices/FeedDataSlice';
-import userOrdersHistorySlice from './slices/orderSlice';
-import currentIngredientReducer from './slices/currentIngredientSlice';
+import rootReducer from './store/rootReducer';
 
 import {
   TypedUseSelectorHook,
@@ -13,30 +7,19 @@ import {
   useSelector as selectorHook
 } from 'react-redux';
 
-// Комбинируем все слайсы в один корневой редьюсер
-const rootReducer = combineReducers({
-  ingredients: ingredientsSlice.reducer,
-  burgerconstructor: burgerConstructorSlice.reducer,
-  feeddata: feedDataSlice.reducer,
-  user: userReducer,
-  ordershistory: userOrdersHistorySlice.reducer,
-  currentIngredient: currentIngredientReducer
-});
-
-export { rootReducer };
-
-// Создаем Redux-хранилище с использованием корневого редьюсера
-const store = configureStore({
+export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false
+      serializableCheck: {
+        // Игнорируем определенные пути в состоянии
+        ignoredPaths: ['constructor']
+      }
     }),
   devTools: process.env.NODE_ENV !== 'production'
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-
 export type AppDispatch = typeof store.dispatch;
 
 // Создаем собственные хуки для использования dispatch и selector с типизацией

@@ -1,16 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { TIngredient } from '@utils-types';
 import { getIngredientsApi } from '../../utils/burger-api';
-import { RootState } from '../store';
+import { TIngredient } from '../../utils/types';
 
-export type TStateIngredients = {
-  ingredients: Array<TIngredient>;
+interface IngredientsState {
+  items: TIngredient[];
   loading: boolean;
-  error: null | string | undefined;
-};
+  error: string | null;
+}
 
-const initialState: TStateIngredients = {
-  ingredients: [],
+const initialState: IngredientsState = {
+  items: [],
   loading: false,
   error: null
 };
@@ -33,21 +32,23 @@ const ingredientsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(getIngredients.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
       .addCase(getIngredients.fulfilled, (state, action) => {
         state.loading = false;
-        state.ingredients = action.payload;
+        state.items = action.payload;
+      })
+      .addCase(getIngredients.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error?.message || 'Произошла ошибка';
+        state.items = [];
       });
   }
 });
 
-export default ingredientsSlice;
-
-export const selectIngredients = (state: RootState) =>
-  state.ingredients.ingredients;
-export const selectLoadingStatus = (state: RootState) =>
+export const selectIngredients = (state: { ingredients: IngredientsState }) =>
+  state.ingredients.items;
+export const selectIngredientsLoading = (state: { ingredients: IngredientsState }) =>
   state.ingredients.loading;
-export const selectError = (state: RootState) => state.ingredients.error;
+export const selectIngredientsError = (state: { ingredients: IngredientsState }) =>
+  state.ingredients.error;
+
+export default ingredientsSlice.reducer;
