@@ -1,45 +1,43 @@
-import { FC, useMemo } from 'react';
-import { TConstructorIngredient } from '@utils-types';
+import { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from '../../services/store';
+import {
+  selectConstructorItems,
+  selectConstructorTotal
+} from '../../services/slices/burgerConstructorSlice';
+import { selectIsAuthenticated } from '../../services/slices/userSlice';
 import { BurgerConstructorUI } from '@ui';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
-  };
+  const navigate = useNavigate();
+  const constructorItems = useSelector(selectConstructorItems);
+  const price = useSelector(selectConstructorTotal);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
-  const orderRequest = false;
-
-  const orderModalData = null;
+  const [showModal, setShowModal] = useState(false);
+  const [orderNumber] = useState(34536); // хардкод
 
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
+    if (!constructorItems.bun) return;
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: '/constructor' } });
+      return;
+    }
+    setShowModal(true);
   };
-  const closeOrderModal = () => {};
 
-  const price = useMemo(
-    () =>
-      (constructorItems.bun ? constructorItems.bun.price * 2 : 0) +
-      constructorItems.ingredients.reduce(
-        (s: number, v: TConstructorIngredient) => s + v.price,
-        0
-      ),
-    [constructorItems]
-  );
-
-  return null;
+  const closeOrderModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <BurgerConstructorUI
       price={price}
-      orderRequest={orderRequest}
       constructorItems={constructorItems}
-      orderModalData={orderModalData}
       onOrderClick={onOrderClick}
       closeOrderModal={closeOrderModal}
+      showModal={showModal}
+      orderNumber={orderNumber}
     />
   );
 };
