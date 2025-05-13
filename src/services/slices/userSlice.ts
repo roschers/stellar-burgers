@@ -6,6 +6,7 @@ import {
   getUserApi,
   updateUserApi
 } from '../../utils/burger-api';
+import { RootState } from '../store';
 
 export const login = createAsyncThunk(
   'user/login',
@@ -48,8 +49,10 @@ export const checkUserAuth = createAsyncThunk(
       return response.user;
     } catch (error) {
       // Если ошибка 401, значит пользователь не авторизован
-      if ((error as { message: string }).message === 'jwt expired' || 
-          (error as { message: string }).message === 'jwt malformed') {
+      if (
+        (error as { message: string }).message === 'jwt expired' ||
+        (error as { message: string }).message === 'jwt malformed'
+      ) {
         return rejectWithValue('unauthorized');
       }
       throw error;
@@ -149,7 +152,8 @@ const userSlice = createSlice({
       .addCase(checkUserAuth.rejected, (state, action) => {
         // Если ошибка unauthorized, просто оставляем user как null
         if (action.payload !== 'unauthorized') {
-          state.error = action.error.message || 'Ошибка при проверке авторизации';
+          state.error =
+            action.error.message || 'Ошибка при проверке авторизации';
         }
       });
   }
@@ -157,9 +161,9 @@ const userSlice = createSlice({
 
 export const { clearError } = userSlice.actions;
 
-export const selectUser = (state: { user: UserState }) => state.user.user;
-export const selectUserLoading = (state: { user: UserState }) =>
-  state.user.loading;
-export const selectUserError = (state: { user: UserState }) => state.user.error;
+export const selectUser = (state: RootState) => state.user.user;
+export const selectUserLoading = (state: RootState) => state.user.loading;
+export const selectUserError = (state: RootState) => state.user.error;
+export const selectIsAuthenticated = (state: RootState) => !!state.user.user;
 
 export default userSlice.reducer;
