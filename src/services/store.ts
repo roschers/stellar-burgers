@@ -5,6 +5,7 @@ import burgerConstructorSlice from './slices/burgerConstructorSlice';
 import userReducer from './slices/userSlice';
 import feedDataSlice from './slices/FeedDataSlice';
 import userOrdersHistorySlice from './slices/orderSlice';
+import currentIngredientReducer from './slices/currentIngredientSlice';
 
 import {
   TypedUseSelectorHook,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   burgerconstructor: burgerConstructorSlice.reducer,
   feeddata: feedDataSlice.reducer,
   user: userReducer,
-  ordershistory: userOrdersHistorySlice.reducer
+  ordershistory: userOrdersHistorySlice.reducer,
+  currentIngredient: currentIngredientReducer
 });
 
 export { rootReducer };
