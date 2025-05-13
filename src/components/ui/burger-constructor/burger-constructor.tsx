@@ -8,15 +8,15 @@ import styles from './burger-constructor.module.css';
 import { BurgerConstructorUIProps } from './type';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorElement, Modal } from '@components';
-import { Preloader, OrderDetailsUI } from '@ui';
+import { OrderDetailsUI } from '@ui';
 
 export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   constructorItems,
-  orderRequest,
   price,
-  orderModalData,
   onOrderClick,
-  closeOrderModal
+  closeOrderModal,
+  showModal,
+  orderNumber
 }) => (
   <section className={styles.burger_constructor}>
     {constructorItems.bun ? (
@@ -87,18 +87,9 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
       />
     </div>
 
-    {orderRequest && (
-      <Modal onClose={closeOrderModal} title={'Оформляем заказ...'}>
-        <Preloader />
-      </Modal>
-    )}
-
-    {orderModalData && (
-      <Modal
-        onClose={closeOrderModal}
-        title={orderRequest ? 'Оформляем заказ...' : ''}
-      >
-        <OrderDetailsUI orderNumber={orderModalData.number} />
+    {showModal && (
+      <Modal onClose={closeOrderModal} title={''}>
+        <OrderDetailsUI orderNumber={orderNumber} />
       </Modal>
     )}
   </section>
