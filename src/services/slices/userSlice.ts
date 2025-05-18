@@ -48,14 +48,16 @@ export const checkUserAuth = createAsyncThunk(
       const response = await getUserApi();
       return response.user;
     } catch (error) {
-      // Если ошибка 401, значит пользователь не авторизован
+      // Если ошибка не связана с токеном, пробрасываем её дальше
       if (
-        (error as { message: string }).message === 'jwt expired' ||
-        (error as { message: string }).message === 'jwt malformed'
+        (error as { message: string }).message !== 'jwt expired' &&
+        (error as { message: string }).message !== 'jwt malformed' &&
+        (error as { message: string }).message !== 'Token is invalid'
       ) {
-        return rejectWithValue('unauthorized');
+        throw error;
       }
-      throw error;
+      // Если ошибка связана с токеном, считаем пользователя неавторизованным
+      return rejectWithValue('unauthorized');
     }
   }
 );
