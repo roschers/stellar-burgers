@@ -19,7 +19,7 @@ export const Login: FC = () => {
     try {
       const resultAction = await dispatch(login({ email, password }));
       if (login.fulfilled.match(resultAction)) {
-        const from = (location.state as any)?.from || '/';
+        const from = (location.state as any)?.from?.pathname || '/';
         navigate(from, { replace: true });
       } else {
         setErrorText('Неверный логин или пароль');
