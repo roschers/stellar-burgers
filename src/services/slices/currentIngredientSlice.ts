@@ -6,7 +6,7 @@ interface CurrentIngredientState {
 }
 
 const initialState: CurrentIngredientState = {
-  ingredient: null,
+  ingredient: null
 };
 
 const currentIngredientSlice = createSlice({
@@ -15,9 +15,9 @@ const currentIngredientSlice = createSlice({
   reducers: {
     setCurrentIngredient(state, action: PayloadAction<TIngredient | null>) {
       state.ingredient = action.payload;
-    },
-  },
+    }
+  }
 });
 
 export const { setCurrentIngredient } = currentIngredientSlice.actions;
-export default currentIngredientSlice.reducer; 
+export default currentIngredientSlice.reducer;

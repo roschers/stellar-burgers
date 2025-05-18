@@ -82,7 +82,9 @@ export default feedDataSlice;
 // Селекторы
 export const selectFeedOrders = (state: RootState) => state.feeddata.orders;
 export const selectFeedTotal = (state: RootState) => state.feeddata.total;
-export const selectFeedTotalToday = (state: RootState) => state.feeddata.totalToday;
+export const selectFeedTotalToday = (state: RootState) =>
+  state.feeddata.totalToday;
 export const selectFeedLoading = (state: RootState) => state.feeddata.loading;
 export const selectFeedError = (state: RootState) => state.feeddata.error;
-export const selectFeedModalOrder = (state: RootState) => state.feeddata.modalOrder; 
+export const selectFeedModalOrder = (state: RootState) =>
+  state.feeddata.modalOrder;

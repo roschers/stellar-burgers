@@ -24,12 +24,12 @@ export const ProtectedRoute: FC<ProtectedRouteProps> = ({
   // Если пользователь не авторизован и это защищенный маршрут
   if (!user && !onlyUnAuth) {
     // Сохраняем текущий путь для возврата после авторизации
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to='/login' state={{ from: location }} replace />;
   }
 
   // Если пользователь авторизован и пытается зайти на страницу только для неавторизованных
   if (user && onlyUnAuth) {
-    return <Navigate to="/" replace />;
+    return <Navigate to='/' replace />;
   }
 
   return <>{children}</>;

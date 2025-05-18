@@ -12,10 +12,10 @@ export const Feed: FC = () => {
   return (
     <Routes>
       <Route
-        path=""
+        path=''
         element={<FeedUI orders={orders} handleGetFeeds={() => {}} />}
       />
-      <Route path=":id" element={<FeedOrderDetails orders={orders} />} />
+      <Route path=':id' element={<FeedOrderDetails orders={orders} />} />
     </Routes>
   );
 };

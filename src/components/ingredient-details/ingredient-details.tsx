@@ -9,7 +9,9 @@ export const IngredientDetails: FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch();
 
-  const ingredientData = useSelector((state) => state.currentIngredient.ingredient);
+  const ingredientData = useSelector(
+    (state) => state.currentIngredient.ingredient
+  );
   const allIngredients = useSelector((state) => state.ingredients.ingredients);
 
   useEffect(() => {

@@ -43,4 +43,4 @@ export const FeedOrderDetails: FC<FeedOrderDetailsProps> = ({ orders }) => {
   };
 
   return <OrderInfoUI orderInfo={orderInfo} />;
-}; 
+};
