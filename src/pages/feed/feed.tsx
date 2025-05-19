@@ -1,19 +1,28 @@
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
-import { TOrder } from '@utils-types';
-import { FC } from 'react';
-import { testOrders } from '../../utils/test-orders';
+import { FC, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { FeedOrderDetails } from './order-details';
+import { useDispatch, useSelector } from '../../services/store';
+import { getFeedData, selectFeedOrders } from '../../services/slices/FeedDataSlice';
 
 export const Feed: FC = () => {
-  const orders: TOrder[] = testOrders;
+  const dispatch = useDispatch();
+  const orders = useSelector(selectFeedOrders);
+
+  useEffect(() => {
+    dispatch(getFeedData());
+  }, [dispatch]);
+
+  if (!orders.length) {
+    return <Preloader />;
+  }
 
   return (
     <Routes>
       <Route
         path=''
-        element={<FeedUI orders={orders} handleGetFeeds={() => {}} />}
+        element={<FeedUI orders={orders} handleGetFeeds={() => dispatch(getFeedData())} />}
       />
       <Route path=':id' element={<FeedOrderDetails orders={orders} />} />
     </Routes>

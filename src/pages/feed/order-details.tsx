@@ -1,7 +1,8 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSelector } from '../../services/store';
+import { selectIngredients } from '../../services/slices/ingredientsSlice';
 import { TOrder } from '@utils-types';
-import { testIngredients } from '../../utils/test-orders';
 import { OrderInfoUI } from '../../components/ui/order-info';
 import { Preloader } from '../../components/ui/preloader';
 
@@ -11,6 +12,7 @@ interface FeedOrderDetailsProps {
 
 export const FeedOrderDetails: FC<FeedOrderDetailsProps> = ({ orders }) => {
   const { id } = useParams<{ id: string }>();
+  const ingredients = useSelector(selectIngredients);
   const order = orders.find((o) => o.number.toString() === id);
 
   if (!order) {
@@ -19,7 +21,7 @@ export const FeedOrderDetails: FC<FeedOrderDetailsProps> = ({ orders }) => {
 
   // Формируем данные для OrderInfoUI
   const ingredientsInfo = order.ingredients.reduce((acc: any, item) => {
-    const ingredient = testIngredients.find((ing) => ing._id === item);
+    const ingredient = ingredients.find((ing) => ing._id === item);
     if (ingredient) {
       if (!acc[item]) {
         acc[item] = { ...ingredient, count: 1 };
