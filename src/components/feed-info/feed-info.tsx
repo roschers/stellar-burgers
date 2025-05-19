@@ -14,7 +14,7 @@ export const FeedInfo: FC = () => {
   const orders = useSelector(selectFeedOrders);
   const feed = {
     total: orders.length,
-    totalToday: orders.filter(order => {
+    totalToday: orders.filter((order) => {
       const orderDate = new Date(order.createdAt);
       const today = new Date();
       return orderDate.toDateString() === today.toDateString();

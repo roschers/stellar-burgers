@@ -28,13 +28,13 @@ export const BurgerConstructor: FC = () => {
       navigate('/login', { state: { from: '/constructor' } });
       return;
     }
-    
+
     const ingredients = [
       constructorItems.bun._id,
-      ...constructorItems.ingredients.map(item => item._id),
+      ...constructorItems.ingredients.map((item) => item._id),
       constructorItems.bun._id
     ];
-    
+
     dispatch(createOrder(ingredients));
   };
 

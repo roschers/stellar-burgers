@@ -33,24 +33,24 @@ export const OrderCardUI: FC<OrderCardUIProps> = memo(
         <h4 className={`pt-6 text text_type_main-medium ${styles.order_name}`}>
           {orderInfo.name}
         </h4>
-        {isProfile && (
-          <OrderStatus status={orderInfo.status} />
-        )}
+        {isProfile && <OrderStatus status={orderInfo.status} />}
         <div className={`pt-6 ${styles.order_content}`}>
           <div className={styles.ingredients}>
-            {orderInfo.ingredientsInfo.slice(0, maxIngredients).map((ingredient, index) => (
-              <div
-                key={index}
-                className={styles.ingredient}
-                style={{ zIndex: maxIngredients - index }}
-              >
-                <img
-                  src={ingredient.image_mobile}
-                  alt={ingredient.name}
-                  className={styles.ingredient_image}
-                />
-              </div>
-            ))}
+            {orderInfo.ingredientsInfo
+              .slice(0, maxIngredients)
+              .map((ingredient, index) => (
+                <div
+                  key={index}
+                  className={styles.ingredient}
+                  style={{ zIndex: maxIngredients - index }}
+                >
+                  <img
+                    src={ingredient.image_mobile}
+                    alt={ingredient.name}
+                    className={styles.ingredient_image}
+                  />
+                </div>
+              ))}
             {orderInfo.ingredientsInfo.length > maxIngredients && (
               <div className={styles.ingredient_count}>
                 +{orderInfo.ingredientsInfo.length - maxIngredients}

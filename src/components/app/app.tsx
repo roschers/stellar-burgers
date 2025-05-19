@@ -50,8 +50,7 @@ const App = () => {
       <Routes location={background || location}>
         {/* Основные роуты */}
         <Route path='/' element={<ConstructorPage />} />
-        <Route path='/feed' element={<Feed />} />
-        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route path='/feed/*' element={<Feed />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
 
         {/* Защищенные роуты для неавторизованных пользователей */}
@@ -122,7 +121,7 @@ const App = () => {
       {background && (
         <Routes>
           <Route
-            path='/feed/:number'
+            path='/feed/:id'
             element={
               <Modal title={''} onClose={closeModal}>
                 <OrderInfo />
