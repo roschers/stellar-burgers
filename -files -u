@@ -1,0 +1,12 @@
+src/components/app/app.tsx
+src/components/burger-constructor-element/burger-constructor-element.tsx
+src/components/burger-constructor/burger-constructor.tsx
+src/components/burger-ingredient/burger-ingredient.tsx
+src/components/burger-ingredients/burger-ingredients.tsx
+src/components/protected-route/protected-route.tsx
+src/components/ui/burger-constructor/burger-constructor.tsx
+src/index.tsx
+src/services/slices/ingredientsSlice.ts
+src/services/slices/orderSlice.ts
+src/services/slices/userSlice.ts
+src/services/store.ts

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { FC, useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from '../../services/store';
@@ -42,6 +43,64 @@ export const App: FC = () => {
         <Route path='/feed/:id' element={<OrderInfo />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
 
+=======
+import {
+  ConstructorPage,
+  Feed,
+  Login,
+  Register,
+  ForgotPassword,
+  ResetPassword,
+  Profile,
+  ProfileOrders,
+  NotFound404
+} from '@pages'; // Импортируем страницы для маршрутизации
+
+import '../../index.css';
+import styles from './app.module.css';
+import { AppHeader, Modal, IngredientDetails, OrderInfo } from '@components';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch } from '../../services/store';
+import { useEffect } from 'react';
+import { getIngredients } from '../../services/slices/ingredientsSlice';
+import { ProtectedRoute } from '../../components/protected-route';
+import { checkUserAuth } from '../../services/slices/userSlice';
+
+const App = () => {
+  const navigate = useNavigate(); // Инициализируем хук для навигации
+  const location = useLocation(); // Инициализируем хук для получения текущего местоположения
+  const dispatch = useDispatch(); // Инициализируем dispatch для вызова экшенов
+
+  // Извлекаем состояние из текущего местоположения
+  const locationState = location.state as { background?: Location };
+  // Проверяем, есть ли фоновое состояние
+  const background = locationState?.background;
+
+  const closeModal = () => {
+    navigate(-1);
+  };
+
+  // При первом рендере компонента запрашиваем ингредиенты с сервера
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
+
+  // При первом рендере компонента проверяем авторизацию пользователя
+  useEffect(() => {
+    dispatch(checkUserAuth());
+  }, [dispatch]);
+
+  return (
+    <div className={styles.app}>
+      <AppHeader />
+      <Routes location={background || location}>
+        {/* Основные роуты */}
+        <Route path='/' element={<ConstructorPage />} />
+        <Route path='/feed/*' element={<Feed />} />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+
+        {/* Защищенные роуты для неавторизованных пользователей */}
+>>>>>>> 9fead279876fa10dc662dbe25d31b99fb77e25e2
         <Route
           path='/login'
           element={
@@ -75,6 +134,10 @@ export const App: FC = () => {
           }
         />
 
+<<<<<<< HEAD
+=======
+        {/* Защищенные роуты для авторизованных пользователей */}
+>>>>>>> 9fead279876fa10dc662dbe25d31b99fb77e25e2
         <Route
           path='/profile'
           element={
@@ -92,7 +155,11 @@ export const App: FC = () => {
           }
         />
         <Route
+<<<<<<< HEAD
           path='/profile/orders/:id'
+=======
+          path='/profile/orders/:number'
+>>>>>>> 9fead279876fa10dc662dbe25d31b99fb77e25e2
           element={
             <ProtectedRoute>
               <OrderInfo />
@@ -100,6 +167,7 @@ export const App: FC = () => {
           }
         />
 
+<<<<<<< HEAD
         <Route path='*' element={<NotFound404 />} />
       </Routes>
 
@@ -109,11 +177,33 @@ export const App: FC = () => {
             path='/ingredients/:id'
             element={
               <Modal title='Детали ингредиента' onClose={handleModalClose}>
+=======
+        {/* Роут для несуществующих страниц */}
+        <Route path='*' element={<NotFound404 />} />
+      </Routes>
+
+      {/* Модальные окна */}
+      {background && (
+        <Routes>
+          <Route
+            path='/feed/:id'
+            element={
+              <Modal title={''} onClose={closeModal}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal title={'Детали ингредиента'} onClose={closeModal}>
+>>>>>>> 9fead279876fa10dc662dbe25d31b99fb77e25e2
                 <IngredientDetails />
               </Modal>
             }
           />
           <Route
+<<<<<<< HEAD
             path='/feed/:id'
             element={
               <Modal title='Информация о заказе' onClose={handleModalClose}>
@@ -127,11 +217,24 @@ export const App: FC = () => {
               <Modal title='Информация о заказе' onClose={handleModalClose}>
                 <OrderInfo />
               </Modal>
+=======
+            path='/profile/orders/:number'
+            element={
+              <ProtectedRoute>
+                <Modal title={''} onClose={closeModal}>
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
+>>>>>>> 9fead279876fa10dc662dbe25d31b99fb77e25e2
             }
           />
         </Routes>
       )}
+<<<<<<< HEAD
     </>
+=======
+    </div>
+>>>>>>> 9fead279876fa10dc662dbe25d31b99fb77e25e2
   );
 };
 

@@ -8,14 +8,13 @@ import styles from './burger-constructor.module.css';
 import { BurgerConstructorUIProps } from './type';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorElement, Modal } from '@components';
-import { Preloader, OrderDetailsUI } from '@ui';
+import { OrderDetailsUI } from '@ui';
 
 export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   constructorItems,
-  orderRequest,
   price,
-  orderModalData,
   onOrderClick,
+<<<<<<< HEAD
   closeOrderModal
 }) => {
   const ingredients = constructorItems?.ingredients || [];
@@ -32,6 +31,42 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
             thumbnail={constructorItems.bun.image}
           />
         </div>
+=======
+  closeOrderModal,
+  showModal,
+  orderNumber
+}) => (
+  <section className={styles.burger_constructor}>
+    {constructorItems.bun ? (
+      <div className={`${styles.element} mb-4 mr-4`}>
+        <ConstructorElement
+          type='top'
+          isLocked
+          text={`${constructorItems.bun.name} (верх)`}
+          price={constructorItems.bun.price}
+          thumbnail={constructorItems.bun.image}
+        />
+      </div>
+    ) : (
+      <div
+        className={`${styles.noBuns} ${styles.noBunsTop} ml-8 mb-4 mr-5 text text_type_main-default`}
+      >
+        Выберите булки
+      </div>
+    )}
+    <ul className={styles.elements}>
+      {constructorItems.ingredients.length > 0 ? (
+        constructorItems.ingredients.map(
+          (item: TConstructorIngredient, index: number) => (
+            <BurgerConstructorElement
+              ingredient={item}
+              index={index}
+              totalItems={constructorItems.ingredients.length}
+              key={item.id}
+            />
+          )
+        )
+>>>>>>> 9fead279876fa10dc662dbe25d31b99fb77e25e2
       ) : (
         <div
           className={`${styles.noBuns} ${styles.noBunsTop} ml-8 mb-4 mr-5 text text_type_main-default`}
@@ -90,6 +125,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         />
       </div>
 
+<<<<<<< HEAD
       {orderRequest && (
         <Modal onClose={closeOrderModal} title={'Оформляем заказ...'}>
           <Preloader />
@@ -107,3 +143,12 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
     </section>
   );
 };
+=======
+    {showModal && (
+      <Modal onClose={closeOrderModal} title={''}>
+        <OrderDetailsUI orderNumber={orderNumber} />
+      </Modal>
+    )}
+  </section>
+);
+>>>>>>> 9fead279876fa10dc662dbe25d31b99fb77e25e2

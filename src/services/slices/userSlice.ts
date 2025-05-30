@@ -6,6 +6,7 @@ import {
   getUserApi,
   updateUserApi
 } from '../../utils/burger-api';
+import { RootState } from '../store';
 
 export const login = createAsyncThunk(
   'user/login',
@@ -47,12 +48,16 @@ export const checkUserAuth = createAsyncThunk(
       const response = await getUserApi();
       return response.user;
     } catch (error) {
-      // Если ошибка 401, значит пользователь не авторизован
-      if ((error as { message: string }).message === 'jwt expired' || 
-          (error as { message: string }).message === 'jwt malformed') {
-        return rejectWithValue('unauthorized');
+      // Если ошибка не связана с токеном, пробрасываем её дальше
+      if (
+        (error as { message: string }).message !== 'jwt expired' &&
+        (error as { message: string }).message !== 'jwt malformed' &&
+        (error as { message: string }).message !== 'Token is invalid'
+      ) {
+        throw error;
       }
-      throw error;
+      // Если ошибка связана с токеном, считаем пользователя неавторизованным
+      return rejectWithValue('unauthorized');
     }
   }
 );
@@ -152,7 +157,7 @@ const userSlice = createSlice({
       .addCase(checkUserAuth.rejected, (state, action) => {
         state.loading = false;
         if (action.payload !== 'unauthorized') {
-          state.error = action.error?.message || 'Ошибка при проверке авторизации';
+          state.error = action.error.message || 'Ошибка при проверке авторизации';
         }
         state.user = null;
       });
@@ -161,9 +166,9 @@ const userSlice = createSlice({
 
 export const { clearError } = userSlice.actions;
 
-export const selectUser = (state: { user: UserState }) => state.user.user;
-export const selectUserLoading = (state: { user: UserState }) =>
-  state.user.loading;
-export const selectUserError = (state: { user: UserState }) => state.user.error;
+export const selectUser = (state: RootState) => state.user.user;
+export const selectUserLoading = (state: RootState) => state.user.loading;
+export const selectUserError = (state: RootState) => state.user.error;
+export const selectIsAuthenticated = (state: RootState) => !!state.user.user;
 
 export default userSlice.reducer;
